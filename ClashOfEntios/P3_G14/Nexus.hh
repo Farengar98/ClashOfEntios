@@ -6,7 +6,8 @@
 #include "MyMap.hh"
 #include "Input.inl.hh"
 #include "Renderer.hh"
-#include "Entio.hh"
+#include "Player.hh"
+#include <ctime>
 
 #define colNum 74
 #define rowNum 36

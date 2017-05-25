@@ -9,9 +9,8 @@ public:
 	MyMap();
 	~MyMap();
 
-	void drawMap();
+	void updateMap();
 	void pushDraw();
 
 	char myMatrix[rowNum][colNum];
-
 };

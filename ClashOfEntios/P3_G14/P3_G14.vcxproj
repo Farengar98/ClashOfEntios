@@ -110,16 +110,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Entio.hh" />
     <ClInclude Include="Input.inl.hh" />
     <ClInclude Include="MyMap.hh" />
     <ClInclude Include="Nexus.hh" />
+    <ClInclude Include="Player.hh" />
     <ClInclude Include="Renderer.hh" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Entio.cc" />
     <ClCompile Include="Game.cc" />
     <ClCompile Include="MyMap.cc" />
+    <ClCompile Include="Player.cc" />
     <ClCompile Include="Renderer.cc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -28,10 +28,9 @@ MyMap::MyMap()
 
 
 MyMap::~MyMap()
-{
-}
+{}
 
-void MyMap::drawMap()
+void MyMap::updateMap()
 {
 	for (int i = 0; i < rowNum; i++)
 	{
