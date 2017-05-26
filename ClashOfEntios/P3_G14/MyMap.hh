@@ -12,5 +12,11 @@ public:
 	void updateMap();
 	void pushDraw();
 
+	bool terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction);
+	bool meleeCheck();
+	
+private:
+
+	char mountain = 'X';
 	char myMatrix[rowNum][colNum];
 };

@@ -59,3 +59,36 @@ void MyMap::pushDraw()
 {
 	enti::cout << enti::cend;
 }
+
+bool MyMap::terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction)
+{
+	if(direction == enti::InputKey::w || direction == enti::InputKey::W)
+	{
+		for(int i = originX, j = originY; j > destinyY; j--)
+		{
+			if (myMatrix[i][j] == mountain) return false;
+		}
+	}
+	else if (direction == enti::InputKey::s || direction == enti::InputKey::S)
+	{
+		for (int i = originX, j = originY; j < destinyY; j++)
+		{
+			if (myMatrix[i][j] == mountain) return false;
+		}
+	}
+	else if(direction == enti::InputKey::a || direction == enti::InputKey::A)
+	{
+		for (int i = originX, j = originY; i > destinyX; i--)
+		{
+			if (myMatrix[i][j] == mountain) return false;
+		}
+	}
+	else if (direction == enti::InputKey::d || direction == enti::InputKey::D)
+	{
+		for (int i = originX, j = originY; i < destinyX; i++)
+		{
+			if (myMatrix[i][j] == mountain) return false;
+		}
+	}
+	else return true;
+}

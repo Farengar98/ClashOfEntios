@@ -5,7 +5,22 @@ class Player
 {
 public:
 	Player();
+	
 	~Player();
+
+	void keepCalm();
+
+	void attackEntio(enti::InputKey direction);
+
+	void moveEntio();
+
+	void undoAction();
+
+	void redoAction();
+
+	void changeEntio();
+
+	void endTurn();
 
 	enum class Weapon { sword, bow, unarmed };
 
@@ -16,6 +31,8 @@ public:
 		int fatigue;
 		int hitPoints;
 		int arrows;
+		int positionX;
+		int positionY;
 		Weapon myWeapon;
 		std::string myName;
 		bool isAlive;
@@ -48,10 +65,22 @@ public:
 
 private:
 
-	enum class playerState{ keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio };
+	MyMap myMatrix;
+
+	Entio currentEntio;
+
+	Entio freshestEntio;
+
+	Player &enemyPlayer;
+
+	enum class playerState{ keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio, endTurn };
 
 	size_t myArmySize;
 
 	std::priority_queue <Entio> myArmy;
+
+	bool myTurn;
+
+	int remainingActions;
 };
 
