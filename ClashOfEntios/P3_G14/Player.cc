@@ -1,28 +1,33 @@
 #include "Nexus.hh"
 
-Player::Player()
+Player::Player(MyMap &myMatrix) : Matrix {myMatrix}
 {
+	state = playerState::notMyTurn;
+
 	myArmySize = 6;
 
-	for(int i = 0; i < myArmySize; i++)
+	myTurn = false;
+
+	remainingActions = 0;
+
+	for (int i = 0; i < myArmySize; i++)
 	{
-		Entio A(i);
-		myArmy.push(A);
+
 	}
 }
 
 Player::~Player()
 {}
 
+
 void Player::keepCalm()
 {
-	playerState state;
 
 	while(state != playerState::endTurn)
 	{
 		switch(state)
 		{
-		case playerState::attackEntio: attackEntio();
+		case playerState::attackEntio: attackEntio(lastKeyPressed);
 			break;
 		case playerState::changeEntio: changeEntio();
 			break;
@@ -37,6 +42,7 @@ void Player::keepCalm()
 		}
 	}
 }
+
 
 void Player::attackEntio(enti::InputKey direction)
 {
@@ -67,4 +73,37 @@ bool operator < (const Player::Entio & A, const Player::Entio & B)
 {
 	if (A.fatigue < B.fatigue)
 		return B < A;
+}
+
+bool Player::terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction)
+{
+	if (direction == enti::InputKey::w || direction == enti::InputKey::W)
+	{
+		for (int i = originX, j = originY; j > destinyY; j--)
+		{
+			if (Matrix.myMatrix[i][j] == Matrix.mountain) return false;
+		}
+	}
+	else if (direction == enti::InputKey::s || direction == enti::InputKey::S)
+	{
+		for (int i = originX, j = originY; j < destinyY; j++)
+		{
+			if (Matrix.myMatrix[i][j] == Matrix.mountain) return false;
+		}
+	}
+	else if (direction == enti::InputKey::a || direction == enti::InputKey::A)
+	{
+		for (int i = originX, j = originY; i > destinyX; i--)
+		{
+			if (Matrix.myMatrix[i][j] == Matrix.mountain) return false;
+		}
+	}
+	else if (direction == enti::InputKey::d || direction == enti::InputKey::D)
+	{
+		for (int i = originX, j = originY; i < destinyX; i++)
+		{
+			if (Matrix.myMatrix[i][j] == Matrix.mountain) return false;
+		}
+	}
+	else return true;
 }

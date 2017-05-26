@@ -4,7 +4,7 @@
 class Player
 {
 public:
-	Player();
+	Player(MyMap &myMatrix);
 	
 	~Player();
 
@@ -22,6 +22,8 @@ public:
 
 	void endTurn();
 
+	bool terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction);
+
 	enum class Weapon { sword, bow, unarmed };
 
 	struct Entio
@@ -36,15 +38,13 @@ public:
 		Weapon myWeapon;
 		std::string myName;
 		bool isAlive;
-		bool flag = true;
 
-		Entio(int i)
+		Entio(int i, bool flag)
 		{
 			if (flag)
 			{
-				std::string studentArmy[] = { "Carla", "Bea", "Guille", "Alessandro", "Ferrán", "Dani" }; //Mi array de strings que sólo existe en el scope del constructor de Entio
+				std::string studentArmy[] = { "Carla", "Bea", "Guille", "Alessandro", "Ferran", "Dani" }; //Mi array de strings que sólo existe en el scope del constructor de Entio
 				myName = studentArmy[i];
-				flag = false;
 			}			
 			else 
 			{
@@ -65,19 +65,17 @@ public:
 
 private:
 
-	MyMap myMatrix;
+	enum class playerState { keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio, endTurn, notMyTurn };
 
-	Entio currentEntio;
-
-	Entio freshestEntio;
-
-	Player &enemyPlayer;
-
-	enum class playerState{ keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio, endTurn };
+	MyMap &Matrix;
 
 	size_t myArmySize;
 
+	enti::InputKey lastKeyPressed;
+
 	std::priority_queue <Entio> myArmy;
+
+	playerState state;
 
 	bool myTurn;
 
