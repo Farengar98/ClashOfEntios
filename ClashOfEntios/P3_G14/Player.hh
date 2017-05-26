@@ -1,12 +1,11 @@
 #pragma once
+#include "Nexus.hh"
 
 class Player
 {
 public:
 	Player();
 	~Player();
-
-private:
 
 	enum class Weapon { sword, bow, unarmed };
 
@@ -20,19 +19,34 @@ private:
 		Weapon myWeapon;
 		std::string myName;
 		bool isAlive;
+		bool flag = true;
 
-		Entio()
+		Entio(int i)
 		{
-			static const std::string Name[] = { "Carla", "Bea", "Guille", "Alessandro", "Ferrán", "Tona", "Jordi",  "Dani", "Lili", "Luci", "Roger", "Brenes"  }; //Mi array de strings que sólo existe en el scope del constructor de Entio
+			if (flag)
+			{
+				std::string studentArmy[] = { "Carla", "Bea", "Guille", "Alessandro", "Ferrán", "Dani" }; //Mi array de strings que sólo existe en el scope del constructor de Entio
+				myName = studentArmy[i];
+				flag = false;
+			}			
+			else 
+			{
+				std::string teacherArmy[] = { "Tona", "Radev", "Carles", "Oscar", "Rita", "Albert" };
+				myName = teacherArmy[i];
+			}
+
 			currentActions = 0;
 			totalTurns = 0;
 			fatigue = 0;
 			hitPoints = 10;
 			arrows = 10;
 			myWeapon = Weapon::unarmed;
-			myName =  Name[rand() % 11];
 		}
 	};
+
+	friend bool operator < (const Entio &A, const Entio &B); //He sobrecargado el operador para que se considere que el Entio con menor fatiga sea el mayor
+
+private:
 
 	enum class playerState{ keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio };
 

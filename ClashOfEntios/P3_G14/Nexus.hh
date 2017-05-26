@@ -3,11 +3,12 @@
 #include <fstream>
 #include <string>
 #include <queue>
+#include <ctime>
+
 #include "MyMap.hh"
 #include "Input.inl.hh"
 #include "Renderer.hh"
 #include "Player.hh"
-#include <ctime>
+#include "Renderer.hh"
 
-#define colNum 74
-#define rowNum 36
+#include <windows.h>

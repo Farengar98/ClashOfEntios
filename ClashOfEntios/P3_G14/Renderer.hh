@@ -1,5 +1,5 @@
 #pragma once
-#include <string>
+#include "Nexus.hh"
 
 namespace enti
 {

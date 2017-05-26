@@ -1,4 +1,5 @@
 #pragma once
+#include "Nexus.hh"
 #include <conio.h>
 
 namespace enti
