@@ -27,7 +27,7 @@
     <ClInclude Include="Input.inl.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.hh">
+    <ClInclude Include="myControl.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="Renderer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cc">
+    <ClCompile Include="myControl.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
