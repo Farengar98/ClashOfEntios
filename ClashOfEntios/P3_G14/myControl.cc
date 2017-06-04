@@ -106,6 +106,18 @@ bool operator < (const myControl::Entio & A, const myControl::Entio & B)
 
 bool myControl::Entio::terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction)
 {
+	if (destinyX > colNum)
+		destinyX = colNum;
+
+	if (destinyX < 0)
+		destinyX = 0;
+
+	if (destinyY > rowNum)
+		destinyY = rowNum;
+
+	if (destinyY < 0)
+		destinyY = 0;
+
 	if (direction == enti::InputKey::w || direction == enti::InputKey::W)
 	{
 		for (int i = originX, j = originY; j > destinyY; j--)
