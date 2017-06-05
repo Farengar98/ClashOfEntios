@@ -1,6 +1,6 @@
 #include "Nexus.hh"
 
-myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
+myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix} 
 {
 	thePlayers A(myMatrix); // = { 10, , 6, currentEntio, true, playerState::keepCalm }; ??
 	A.remainingActions = 10;
@@ -9,13 +9,15 @@ myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
 	A.state = playerState::keepCalm;
 	A.lastKeyPressed = enti::InputKey::NONE;
 	A.tag = true;
-	
+	for (int i = 0, j = 65; j < 71; i++, j++)
+		A.enemyEntios[i] = j;
+		
 	for (int i = 0; i < A.myArmySize; i++)
 	{
 		Entio student(i, true);
-		A.myArmy.push(student);
+		A.myArmy.push_back(student);
 	}
-	A.currentEntio = A.myArmy.top();
+	A.currentEntio = A.myArmy.front();
 
 	thePlayers B(myMatrix);
 	//remainingActions no debería hacer falta inicializarlo aquí (cuando toca turno, remainingActions = 10)
@@ -24,10 +26,13 @@ myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
 	B.state = playerState::notMyTurn;
 	//lastKeyPressed no debería hacer falta inicializrlo aquí (misma razón que remaining actions)
 	B.tag = false;
+	for (int i = 0, j = 49; j < 55; i++, j++)
+		B.enemyEntios[i] = j;
+
 	for (int i = 0; i < A.myArmySize; i++)
 	{
 		Entio teacher(i, false);
-		B.myArmy.push(teacher);
+		B.myArmy.push_back(teacher);
 	}
 	//Tampoco hay ningun currentEntio mientras no estés en tu turno (misma razón que remaining actions)
 }
@@ -39,21 +44,59 @@ bool myControl::thePlayers::checkPlayer()
 {
 	if (tag)
 		return true;
-	
 	return false;
 }
 
-void myControl::thePlayers::keepCalm()
+void myControl::thePlayers::keepCalm(enti::InputKey keyPressed)
 {
 	while(state != playerState::endTurn)
 	{
+		switch (keyPressed)
+		{
+		case enti::InputKey::SPACEBAR: state = playerState::attackEntio;
+			break;
+
+		case enti::InputKey::ENTER: 
+			if(remainingActions > 0)
+				state = playerState::changeEntio;
+			else state = playerState::endTurn;
+			break;
+
+		case enti::InputKey::w:
+		case enti::InputKey::W:
+		case enti::InputKey::s:
+		case enti::InputKey::S:
+		case enti::InputKey::a:
+		case enti::InputKey::A:
+		case enti::InputKey::d:
+		case enti::InputKey::D:
+			state = playerState::moveEntio;
+			break;
+
+		case enti::InputKey::z:
+		case enti::InputKey::Z:	
+			state = playerState::undoAction;
+			break;
+
+		case enti::InputKey::X:
+		case enti::InputKey::x:
+			state = playerState::redoAction;
+			break;
+		default:
+			break;
+		}
+
 		switch(state)
 		{
-		case playerState::attackEntio: attackEntio(lastKeyPressed);
+		case playerState::attackEntio: 
+			enti::cout << enti::Color::WHITE << "What weapon would you like to use?" << enti::endl;
+			enti::InputKey weapon;
+			weapon = enti::getInputKey();
+			attackEntio(weapon);
 			break;
 		case playerState::changeEntio: changeEntio();
 			break;
-		case playerState::moveEntio: moveEntio();
+		case playerState::moveEntio: moveEntio(keyPressed);
 			break;
 		case playerState::undoAction: undoAction();
 			break;
@@ -65,66 +108,101 @@ void myControl::thePlayers::keepCalm()
 	}
 }
 
-
-void myControl::thePlayers::attackEntio(enti::InputKey direction)
-
+void myControl::thePlayers::attackEntio(enti::InputKey weapon)
 {
 	bool possibleToAttack;
-	possibleToAttack = currentEntio.meleeCheck(direction);
+	enti::InputKey direction;
+
+	if (weapon == enti::InputKey::NUM1)
+	{
+		enti::cout << "The weapon you've chosen is the sword" << enti::endl << enti::endl;
+		currentEntio.myWeapon = Weapon::sword;
+		enti::cout << enti::Color::YELLOW << "For the direction of the attack type:" << enti::endl;
+		enti::cout << "1 - Up" << enti::endl;
+		enti::cout << "2 - Left" << enti::endl;
+		enti::cout << "3 - Down" << enti::endl;
+		enti::cout << "4 - Right" << enti::endl;
+		direction = enti::getInputKey();
+		if (direction == enti::InputKey::NUM1)
+		{
+			if (tag)
+			{
+				for (int i = 0; i < 6; i++)
+				{
+					if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == enemyEntios[i])
+					{
+						Matrix.modifyMap(currentEntio.positionX, currentEntio.positionY - 1, myArmy[i].tile);
+					}
+				}
+			}
+			else
+		}
+	
+	}
 }
 
 void myControl::thePlayers::moveEntio(enti::InputKey direction)
 {
-
+	int charColliderSize = Matrix.getIndex();
+	bool collider = false;
 
 	switch (direction)
 	{
 	case enti::InputKey::w:
 	case enti::InputKey::W:
-
-		if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider(0) 
-		|| Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider(1))
+		
+		for (int i = 0; i < charColliderSize; i++)
 		{
-			return;
+			if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider(i))
+			{
+				collider = true;
+			}
 		}
-		else if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider())
-		{
-
-		}
+		if(collider = false) currentEntio.positionY += -1;
 		break;
 
 	case enti::InputKey::s:
 	case enti::InputKey::S:
 
-		if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY + 1) == Matrix.charCollider())
+		for (int i = 0; i < charColliderSize; i++)
 		{
-			return true;
+			if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY + 1) == Matrix.charCollider(i))
+			{
+				collider = true;
+			}
 		}
+		if (collider = false) currentEntio.positionY += 1;
 		break;
 
 	case enti::InputKey::a:
 	case enti::InputKey::A:
 
-		if (Matrix.getContent(currentEntio.positionX - 1, currentEntio.positionY) == Matrix.charCollider())
+		for (int i = 0; i < charColliderSize; i++)
 		{
-			return true;
+			if (Matrix.getContent(currentEntio.positionX - 1, currentEntio.positionY) == Matrix.charCollider(i))
+			{
+				collider = true;
+			}
 		}
+		if (collider = false) currentEntio.positionX += -1;
 		break;
 
 	case enti::InputKey::d:
 	case enti::InputKey::D:
 
-		if (Matrix.getContent(currentEntio.positionX + 1, currentEntio.positionY) == Matrix.charCollider())
+		for (int i = 0; i < charColliderSize; i++)
 		{
-			return true;
+			if (Matrix.getContent(currentEntio.positionX + 1, currentEntio.positionY) == Matrix.charCollider(i))
+			{
+				collider = true;
+			}
 		}
+		if (collider = false) currentEntio.positionX += 1;
 		break;
 
-	default: return false;
+	default:
 		break;
 	}
-
-
 }
 
 void myControl::thePlayers::undoAction()
@@ -196,52 +274,5 @@ bool myControl::Entio::terrainCheck(int originX, int originY, int destinyX, int 
 		}
 	}
 	else return true;
-}
-
-bool myControl::Entio::meleeCheck(enti::InputKey direction)
-{
-	if (isPlaying)
-	{
-		switch(direction)
-		{
-		case enti::InputKey::w: 
-		case enti::InputKey::W:
-
-			if (Matrix.getContent(positionX, positionY - 1) == Matrix.checkEnemyEntio(positionX, positionY - 1))
-			{
-				return true;
-			}
-			break;
-
-		case enti::InputKey::s:
-		case enti::InputKey::S:
-			
-			if (Matrix.getContent(positionX, positionY + 1) == Matrix.checkEnemyEntio(positionX, positionY + 1))
-			{
-				return true;
-			}
-			break;
-
-		case enti::InputKey::a:
-		case enti::InputKey::A:
-			
-			if (Matrix.getContent(positionX - 1, positionY) == Matrix.checkEnemyEntio(positionX, positionY + 1))
-			{
-				return true;
-			}
-			break;
-
-		case enti::InputKey::d:
-		case enti::InputKey::D:
-
-			if (Matrix.getContent(positionX + 1, positionY) == Matrix.checkEnemyEntio(positionX + 1, positionY))
-			{
-				return true;
-			}
-			break;
-
-		default: return false;
-			break;
-	}
 }
 

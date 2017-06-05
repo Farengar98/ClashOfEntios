@@ -6,7 +6,7 @@ namespace enti
 	enum class InputKey // Represents each key that the player can use
 	{
 		NONE = -1, w = 87, W = 119, a = 65, A = 97, s = 83, S = 115, d = 68, D = 100, z = 122, Z = 90, 
-		NUM0 = 48, NUM1, NUM2, NUM3, NUM4, ENTER = 13, SPACEBAR = 32, ESC = 27
+		x = 120, X = 88, NUM0 = 48, NUM1, NUM2, NUM3, NUM4, ENTER = 13, SPACEBAR = 32, ESC = 27
 	};
 
 	inline InputKey getInputKey() // Returns the key that has been pressed

@@ -25,6 +25,7 @@ public:
 		bool isPlaying;
 		static MyMap &Matrix; //También se lo paso por referencia a los entios (de otro modo no me reconoce al objeto mapa al usar un método del struct Entio)
 		std::stack<Entio> mistakenActions; //Para undoActions y redoActions
+		char tile;
 
 		Entio()
 		{}
@@ -49,6 +50,7 @@ public:
 			arrows = 10;
 			myWeapon = Weapon::unarmed;
 			isAlive = true;
+			tile = '.';
 		}
 		bool myControl::Entio::meleeCheck(enti::InputKey direction);
 
@@ -60,20 +62,21 @@ public:
 	struct thePlayers 
 	{
 		int remainingActions; // Las acciones que le quedan por hacer en el turno
-		std::priority_queue <Entio> myArmy; // ¿¿¿¿¿¿¿¿¿¿¿????????????? Y SI ME MATAN UN ENTIO DEL MEDIO, ENTONCES QUÉ PUTA?
+		std::vector <Entio> myArmy; // ¿¿¿¿¿¿¿¿¿¿¿????????????? Y SI ME MATAN UN ENTIO DEL MEDIO, ENTONCES QUÉ PUTA?
 		size_t myArmySize;
 		Entio currentEntio;
 		bool myTurn;
 		enti::InputKey lastKeyPressed;
 		playerState state;
 		bool tag;
+		char enemyEntios[6];
 		std::stack<Entio> mistakenActions;
 
 		thePlayers(MyMap &myMatrix) : Matrix{ myMatrix } {}
 
-		bool myControl::thePlayers::checkPlayer();
+		void myControl::thePlayers::keepCalm(enti::InputKey keyPressed);
 
-		void myControl::thePlayers::keepCalm();
+		bool myControl::thePlayers::checkPlayer();
 
 		void myControl::thePlayers::attackEntio(enti::InputKey direction);
 

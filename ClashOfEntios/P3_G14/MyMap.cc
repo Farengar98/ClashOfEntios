@@ -1,13 +1,9 @@
 #include "Nexus.hh"
 
-MyMap::MyMap(myControl &myControl) : Control {myControl}
+MyMap::MyMap(myControl &myControl) : Control {myControl}, collider { 'O', 'X', '1', '2', '3', '4', '5', '6', 'A', 'B', 'C', 'D', 'E', 'F' } // '/0' ??
 {
 	std::ifstream myMapFile("default.cfg"); //Creo mi archivo file de tipo ifstream en el que cargo el contenido del documento default.cfg (el campo de juego)
-	std::string currentLine;
-
-	collider[0] = 'X';
-
-	collider[1] = 'O';
+	std::string currentLine;	
 
 	if (myMapFile.is_open())
 	{
@@ -74,4 +70,14 @@ char MyMap::charCollider(int index)
 char MyMap::getContent(int positionX, int positionY)
 {
 	return myMatrix[positionX][positionY];
+}
+
+int MyMap::getIndex()
+{
+	return sizeof(collider)/sizeof(char);
+}
+
+void MyMap::modifyMap(int positionX, int positionY, char newChar)
+{
+	myMatrix[positionX][positionY] = newChar;
 }
