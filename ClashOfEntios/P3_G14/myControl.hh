@@ -27,9 +27,6 @@ public:
 		std::stack<Entio> mistakenActions; //Para undoActions y redoActions
 		char tile;
 
-		Entio()
-		{}
-
 		Entio(int i, bool flag)
 		{
 			if (flag)
@@ -59,10 +56,10 @@ public:
 
 	enum class playerState { keepCalm, attackEntio, moveEntio, undoAction, redoAction, changeEntio, endTurn, notMyTurn };
 
-	struct thePlayers 
+	struct thePlayer 
 	{
 		int remainingActions; // Las acciones que le quedan por hacer en el turno
-		std::vector <Entio> myArmy; // ¿¿¿¿¿¿¿¿¿¿¿????????????? Y SI ME MATAN UN ENTIO DEL MEDIO, ENTONCES QUÉ PUTA?
+		std::vector <Entio> myArmy;
 		size_t myArmySize;
 		Entio currentEntio;
 		bool myTurn;
@@ -70,32 +67,31 @@ public:
 		playerState state;
 		bool tag;
 		char enemyEntios[6];
-		std::stack<Entio> mistakenActions;
+		//std::stack<Entio> mistakenActions;
 
-		thePlayers(MyMap &myMatrix) : Matrix{ myMatrix } {}
+		void myControl::thePlayer::keepCalm(enti::InputKey keyPressed);
 
-		void myControl::thePlayers::keepCalm(enti::InputKey keyPressed);
+		bool myControl::thePlayer::checkPlayer();
 
-		bool myControl::thePlayers::checkPlayer();
+		void myControl::thePlayer::attackEntio(enti::InputKey direction);
 
-		void myControl::thePlayers::attackEntio(enti::InputKey direction);
+		void myControl::thePlayer::undoAction();
 
-		void myControl::thePlayers::undoAction();
+		void myControl::thePlayer::redoAction();
 
-		void myControl::thePlayers::redoAction();
+		void myControl::thePlayer::moveEntio(enti::InputKey direction);
 
-		void myControl::thePlayers::moveEntio(enti::InputKey direction);
+		void myControl::thePlayer::changeEntio();
 
-		void myControl::thePlayers::changeEntio();
-
-		void myControl::thePlayers::endTurn();
+		void myControl::thePlayer::endTurn();
 
 		MyMap &Matrix;
 	};
-		friend bool operator < (const Entio &A, const Entio &B); //He sobrecargado el operador para que se considere que el Entio con menor fatiga sea el mayor
+	//	friend bool operator < (const Entio &A, const Entio &B); //He sobrecargado el operador para que se considere que el Entio con menor fatiga sea el mayor
 	
 private:
 
+	thePlayer student;
+	thePlayer teacher;
 	MyMap &Matrix;
 };
-

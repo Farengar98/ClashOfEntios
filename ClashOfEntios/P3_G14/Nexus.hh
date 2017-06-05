@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream> // Para trabajar con ficheros
 #include <string>
-#include <queue> // Para mi priority_queue
+#include <vector> // Para mi priority_queue
 #include <ctime>
 #include <conio.h> // Para el Input.inl.hh
 #include <stack>

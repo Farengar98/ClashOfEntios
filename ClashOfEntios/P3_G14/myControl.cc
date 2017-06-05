@@ -2,37 +2,37 @@
 
 myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix} 
 {
-	thePlayers A(myMatrix); // = { 10, , 6, currentEntio, true, playerState::keepCalm }; ??
-	A.remainingActions = 10;
-	A.myArmySize = 6;
-	A.myTurn = true;
-	A.state = playerState::keepCalm;
-	A.lastKeyPressed = enti::InputKey::NONE;
-	A.tag = true;
+	student.remainingActions = 10;
+	student.myArmySize = 6;
+	student.myTurn = true;
+	student.state = playerState::keepCalm;
+	student.lastKeyPressed = enti::InputKey::NONE;
+	student.tag = true;
+/*
 	for (int i = 0, j = 65; j < 71; i++, j++)
-		A.enemyEntios[i] = j;
-		
-	for (int i = 0; i < A.myArmySize; i++)
+		student.enemyEntios[i] = j;
+*/		
+	for (int i = 0; i < student.myArmySize; i++)
 	{
-		Entio student(i, true);
-		A.myArmy.push_back(student);
+		Entio A(i, true);
+		student.myArmy.push_back(A);
 	}
-	A.currentEntio = A.myArmy.front();
+	student.currentEntio = student.myArmy.front();
 
-	thePlayers B(myMatrix);
 	//remainingActions no debería hacer falta inicializarlo aquí (cuando toca turno, remainingActions = 10)
-	B.myArmySize = 6;
-	B.myTurn = false;
-	B.state = playerState::notMyTurn;
+	teacher.myArmySize = 6;
+	teacher.myTurn = false;
+	teacher.state = playerState::notMyTurn;
 	//lastKeyPressed no debería hacer falta inicializrlo aquí (misma razón que remaining actions)
-	B.tag = false;
-	for (int i = 0, j = 49; j < 55; i++, j++)
-		B.enemyEntios[i] = j;
-
-	for (int i = 0; i < A.myArmySize; i++)
+	teacher.tag = false;
+	
+/*	for (int i = 0, j = 49; j < 55; i++, j++)
+		teacher.enemyEntios[i] = j;
+*/
+	for (int i = 0; i < teacher.myArmySize; i++)
 	{
-		Entio teacher(i, false);
-		B.myArmy.push_back(teacher);
+		Entio B(i, false);
+		teacher.myArmy.push_back(B);
 	}
 	//Tampoco hay ningun currentEntio mientras no estés en tu turno (misma razón que remaining actions)
 }
@@ -40,14 +40,14 @@ myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
 myControl::~myControl()
 {}
 
-bool myControl::thePlayers::checkPlayer()
+bool myControl::thePlayer::checkPlayer()
 {
 	if (tag)
 		return true;
 	return false;
 }
 
-void myControl::thePlayers::keepCalm(enti::InputKey keyPressed)
+void myControl::thePlayer::keepCalm(enti::InputKey keyPressed)
 {
 	while(state != playerState::endTurn)
 	{
@@ -108,7 +108,7 @@ void myControl::thePlayers::keepCalm(enti::InputKey keyPressed)
 	}
 }
 
-void myControl::thePlayers::attackEntio(enti::InputKey weapon)
+void myControl::thePlayer::attackEntio(enti::InputKey weapon)
 {
 	bool possibleToAttack;
 	enti::InputKey direction;
@@ -131,17 +131,15 @@ void myControl::thePlayers::attackEntio(enti::InputKey weapon)
 				{
 					if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == enemyEntios[i])
 					{
-						Matrix.modifyMap(currentEntio.positionX, currentEntio.positionY - 1, myArmy[i].tile);
+						Matrix.modifyMap(currentEntio.positionX, currentEntio.positionY - 1, teacher.myArmy[i].tile);
 					}
 				}
 			}
-			else
 		}
-	
 	}
 }
 
-void myControl::thePlayers::moveEntio(enti::InputKey direction)
+void myControl::thePlayer::moveEntio(enti::InputKey direction)
 {
 	int charColliderSize = Matrix.getIndex();
 	bool collider = false;
@@ -205,22 +203,22 @@ void myControl::thePlayers::moveEntio(enti::InputKey direction)
 	}
 }
 
-void myControl::thePlayers::undoAction()
+void myControl::thePlayer::undoAction()
 {
 
 }
 
-void myControl::thePlayers::redoAction()
+void myControl::thePlayer::redoAction()
 {
 
 }
 
-void myControl::thePlayers::changeEntio()
+void myControl::thePlayer::changeEntio()
 {
 
 }
 
-void myControl::thePlayers::endTurn()
+void myControl::thePlayer::endTurn()
 {
 
 }
@@ -230,7 +228,7 @@ bool operator < (const myControl::Entio & A, const myControl::Entio & B)
 	if (A.fatigue < B.fatigue)
 		return B < A;
 }
-
+/*
 bool myControl::Entio::terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction)
 {
 	if (destinyX > colNum)
@@ -275,4 +273,4 @@ bool myControl::Entio::terrainCheck(int originX, int originY, int destinyX, int 
 	}
 	else return true;
 }
-
+*/
