@@ -2,7 +2,7 @@
 
 myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
 {
-	thePlayers A; // = { 10, , 6, currentEntio, true, playerState::keepCalm }; ??
+	thePlayers A(myMatrix); // = { 10, , 6, currentEntio, true, playerState::keepCalm }; ??
 	A.remainingActions = 10;
 	A.myArmySize = 6;
 	A.myTurn = true;
@@ -17,7 +17,7 @@ myControl::myControl(MyMap &myMatrix) : Matrix {myMatrix}
 	}
 	A.currentEntio = A.myArmy.top();
 
-	thePlayers B;
+	thePlayers B(myMatrix);
 	//remainingActions no debería hacer falta inicializarlo aquí (cuando toca turno, remainingActions = 10)
 	B.myArmySize = 6;
 	B.myTurn = false;
@@ -73,8 +73,57 @@ void myControl::thePlayers::attackEntio(enti::InputKey direction)
 	possibleToAttack = currentEntio.meleeCheck(direction);
 }
 
-void myControl::thePlayers::moveEntio()
+void myControl::thePlayers::moveEntio(enti::InputKey direction)
 {
+
+
+	switch (direction)
+	{
+	case enti::InputKey::w:
+	case enti::InputKey::W:
+
+		if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider(0) 
+		|| Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider(1))
+		{
+			return;
+		}
+		else if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY - 1) == Matrix.charCollider())
+		{
+
+		}
+		break;
+
+	case enti::InputKey::s:
+	case enti::InputKey::S:
+
+		if (Matrix.getContent(currentEntio.positionX, currentEntio.positionY + 1) == Matrix.charCollider())
+		{
+			return true;
+		}
+		break;
+
+	case enti::InputKey::a:
+	case enti::InputKey::A:
+
+		if (Matrix.getContent(currentEntio.positionX - 1, currentEntio.positionY) == Matrix.charCollider())
+		{
+			return true;
+		}
+		break;
+
+	case enti::InputKey::d:
+	case enti::InputKey::D:
+
+		if (Matrix.getContent(currentEntio.positionX + 1, currentEntio.positionY) == Matrix.charCollider())
+		{
+			return true;
+		}
+		break;
+
+	default: return false;
+		break;
+	}
+
 
 }
 

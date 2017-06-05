@@ -5,6 +5,10 @@ MyMap::MyMap(myControl &myControl) : Control {myControl}
 	std::ifstream myMapFile("default.cfg"); //Creo mi archivo file de tipo ifstream en el que cargo el contenido del documento default.cfg (el campo de juego)
 	std::string currentLine;
 
+	collider[0] = 'X';
+
+	collider[1] = 'O';
+
 	if (myMapFile.is_open())
 	{
 	int counter = 0;
@@ -21,7 +25,6 @@ MyMap::MyMap(myControl &myControl) : Control {myControl}
 	}
 	else std::cout << "It's not possible to find the file you've just tried to open" << std::endl;
 }
-
 
 MyMap::~MyMap()
 {}
@@ -63,30 +66,12 @@ void MyMap::pushDraw()
 	enti::cout << enti::cend;
 }
 
-char MyMap::charCollider()
+char MyMap::charCollider(int index)
 {
-	return mountain;
+	return collider[index];
 }
 
 char MyMap::getContent(int positionX, int positionY)
 {
 	return myMatrix[positionX][positionY];
-}
-
-char MyMap::checkEnemyEntio(int positionX, int positionY)
-{
-	bool whoIsPlaying = myControl::thePlayers::checkPlayer();
-	switch ()
-	{
-
-		char toBeDeadEntio;
-
-		if (myMatrix[positionX][positionY] == '1')
-		{
-			toBeDeadEntio = myMatrix[positionX][positionY];
-			return toBeDeadEntio;
-		}
-
-	}
-	return 0;
 }

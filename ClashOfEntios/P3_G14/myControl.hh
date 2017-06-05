@@ -51,6 +51,7 @@ public:
 			isAlive = true;
 		}
 		bool myControl::Entio::meleeCheck(enti::InputKey direction);
+
 		bool myControl::Entio::terrainCheck(int originX, int originY, int destinyX, int destinyY, enti::InputKey direction);
 	};
 
@@ -66,9 +67,9 @@ public:
 		enti::InputKey lastKeyPressed;
 		playerState state;
 		bool tag;
+		std::stack<Entio> mistakenActions;
 
-		thePlayers()
-		{}
+		thePlayers(MyMap &myMatrix) : Matrix{ myMatrix } {}
 
 		bool myControl::thePlayers::checkPlayer();
 
@@ -76,16 +77,17 @@ public:
 
 		void myControl::thePlayers::attackEntio(enti::InputKey direction);
 
-		void myControl::thePlayers::moveEntio();
-
 		void myControl::thePlayers::undoAction();
 
 		void myControl::thePlayers::redoAction();
+
+		void myControl::thePlayers::moveEntio(enti::InputKey direction);
 
 		void myControl::thePlayers::changeEntio();
 
 		void myControl::thePlayers::endTurn();
 
+		MyMap &Matrix;
 	};
 		friend bool operator < (const Entio &A, const Entio &B); //He sobrecargado el operador para que se considere que el Entio con menor fatiga sea el mayor
 	
